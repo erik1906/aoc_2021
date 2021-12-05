@@ -1,34 +1,11 @@
 fun main() {
     fun part1(input: List<String>): Int {
-        var counter = 0
-        var lastNumber: Int? = null
-        input.forEach {
-            val unMutableLastNumber = lastNumber
-            val intValue = it.toInt()
-            if (unMutableLastNumber != null) {
-                if ( intValue > unMutableLastNumber) counter++
-            }
-            lastNumber = intValue
-        }
-        return counter
+        return input.zipWithNext().count { (a, b) ->  a.toInt() < b.toInt()}
     }
 
     fun part2(input: List<String>): Int {
-        var counter = 0
-        var lastNumber: Int? = null
-        input.windowed(3,1 ,false) {
-            var sum = 0
-            it.forEach { value ->
-                sum += value.toInt()
-            }
-            val unMutableLastNumber = lastNumber
-            if (unMutableLastNumber != null && sum > unMutableLastNumber) counter++
-            lastNumber = sum
-
-            sum
-        }
-
-        return counter
+        val inputInt = input.map { it.toInt() }
+        return inputInt.windowed(3) { it.sum() }.zipWithNext().count { (a, b) ->  a < b}
     }
 
     // test if implementation meets criteria from the description, like:
